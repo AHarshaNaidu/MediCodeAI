@@ -24,7 +24,7 @@ def truncate_content(content, max_chars=2000):
 
 def call_medical_coder(note):
     data = {
-        "model": "deepseek-r1-distill-llama-70b",
+        "model": "llama-3.1-8b-instant",
         "messages": [
             {"role": "system", "content": truncate_content(medical_coding_prompt, 500)},
             {"role": "user", "content": truncate_content(note)}
