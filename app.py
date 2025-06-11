@@ -5,28 +5,36 @@ from groq import Groq
 api_key = st.secrets["api_key"]
 client = Groq(api_key=api_key)
 
-# Prompt Template
-medical_coding_prompt = """
+# Prompt templates
+PROMPTS = {
+    "ICD-10": """
 You are a medical coding assistant.
-Given a clinical note, respond ONLY with appropriate ICD-10(or latest) code or cides in this format:
+Given a clinical note, return only ICD-10 codes in this format:
 
 - Code: <code>
 - Description: <short description>
 
-DO NOT include thoughts, reasoning, or internal thinking.
-NO explanations, NO <think> tags.
-Only return the final codes.
-"""
+Do NOT include thoughts, reasoning, or explanations.
+""",
+    "CPT": """
+You are a medical coding assistant.
+Given a clinical note, return only CPT codes in this format:
 
+- Code: <code>
+- Description: <short description>
+
+No internal thoughts or explanations.
+"""
+}
 
 def truncate_content(content, max_chars=2000):
     return content[:max_chars] if content else ""
 
-def call_medical_coder(note):
+def call_medical_coder(note, prompt):
     data = {
         "model": "llama-3.1-8b-instant",
         "messages": [
-            {"role": "system", "content": truncate_content(medical_coding_prompt, 500)},
+            {"role": "system", "content": truncate_content(prompt, 500)},
             {"role": "user", "content": truncate_content(note)}
         ],
         "max_tokens": 1000
@@ -41,17 +49,23 @@ def call_medical_coder(note):
 
 # Streamlit UI
 st.set_page_config(page_title="MediCodeAI - AI Powered Medical Coding", page_icon="⚕️")
-st.title("MediCodeAI")
+st.title("🩺 MediCodeAI")
 st.caption("AI-Powered Medical Coding")
 
+# Dropdown to select code type
+code_type = st.selectbox("Select Code Type", ["ICD-10", "CPT"])
+
+# Text input
 note = st.text_area("Enter Clinical Note:", placeholder="e.g. Patient presents with chronic shortness of breath...")
 
+# Button
 if st.button("Get Medical Codes"):
     if not note.strip():
         st.warning("Please enter a clinical note.")
     else:
         with st.spinner("Analyzing with MediCodeAI..."):
-            result = call_medical_coder(note)
+            prompt = PROMPTS[code_type]
+            result = call_medical_coder(note, prompt)
             if result:
                 st.markdown("### Suggested Medical Codes:")
                 st.code(result)
