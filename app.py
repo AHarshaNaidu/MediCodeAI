@@ -49,7 +49,7 @@ def call_medical_coder(note, prompt):
 
 # Streamlit UI
 st.set_page_config(page_title="MediCodeAI - AI Powered Medical Coding", page_icon="⚕️")
-st.title("🩺 MediCodeAI")
+st.title("⚕️ MediCodeAI")
 st.caption("AI-Powered Medical Coding")
 
 # Dropdown to select code type
