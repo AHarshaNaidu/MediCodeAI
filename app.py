@@ -8,12 +8,16 @@ client = Groq(api_key=api_key)
 # Prompt Template
 medical_coding_prompt = """
 You are a medical coding assistant.
-Given a clinical note, extract the most appropriate ICD-10 or CPT codes.
-Output format:
+Given a clinical note, respond ONLY with appropriate ICD-10 and CPT codes in this format:
+
 - Code: <code>
 - Description: <short description>
-Keep results concise and medically accurate.
+
+DO NOT include thoughts, reasoning, or internal thinking.
+NO explanations, NO <think> tags.
+Only return the final codes.
 """
+
 
 def truncate_content(content, max_chars=2000):
     return content[:max_chars] if content else ""
