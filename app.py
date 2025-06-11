@@ -8,7 +8,7 @@ client = Groq(api_key=api_key)
 # Prompt Template
 medical_coding_prompt = """
 You are a medical coding assistant.
-Given a clinical note, respond ONLY with appropriate ICD-10 and CPT codes in this format:
+Given a clinical note, respond ONLY with appropriate ICD-10(or latest) code or cides in this format:
 
 - Code: <code>
 - Description: <short description>
