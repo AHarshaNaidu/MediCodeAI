@@ -38,7 +38,7 @@ def call_medical_coder(note):
 # Streamlit UI
 st.set_page_config(page_title="MediCodeAI - AI Powered Medical Coding", page_icon="⚕️")
 st.title("MediCodeAI")
-st.caption("AI-Powered Medical Coding • Prototype using Groq")
+st.caption("AI-Powered Medical Coding")
 
 note = st.text_area("Enter Clinical Note:", placeholder="e.g. Patient presents with chronic shortness of breath...")
 
