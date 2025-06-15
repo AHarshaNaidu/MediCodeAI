@@ -69,3 +69,24 @@ if st.button("Get Medical Codes"):
             if result:
                 st.markdown("### Suggested Medical Codes:")
                 st.code(result)
+
+                # Additional functionality: generate enriched clinical statement
+                st.markdown("---")
+                st.markdown("### Enriched Clinical Statement (Based on Codes):")
+
+                enhanced_prompt = f"""
+You are a medical AI assistant.
+Given the following clinical note and the {code_type} codes with descriptions, generate a human-readable enriched clinical statement that reflects the conditions and treatments described in the codes.
+Do NOT include or mention the code numbers, just the medical context.
+
+Clinical Note:
+{note}
+
+Codes:
+{result}
+
+Output:
+"""
+                enriched_result = call_medical_coder(note, enhanced_prompt)
+                if enriched_result:
+                    st.markdown(enriched_result)
